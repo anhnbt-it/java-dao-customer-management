@@ -17,12 +17,16 @@ import java.util.logging.Logger;
  */
 public class DBConnection {
     
-    public static Connection getConnection() {
-        String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=quanlysanpham;user=sa;password=KhoaiTay@2019";
+    private final String jdbcUrl = "jdbc:sqlserver://localhost:1433/quanlysanpham";
+    private final String jdbcUser = "sa";
+    private final String jdbcPassword = "KhoaiTay@2019";
+    
+    public Connection getConnection() {
+        String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=quanlysanpham;user=sa;password=";
         Connection conn = null;
         try {
             System.out.print("Connecting to SQL Server ... ");
-            conn = DriverManager.getConnection(connectionUrl);
+            conn = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
             System.out.println("Done.");
         } catch (SQLException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
