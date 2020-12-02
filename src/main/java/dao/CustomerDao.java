@@ -21,15 +21,10 @@ import model.Customer;
  */
 public class CustomerDao implements IDao<Customer> {
     private Connection conn;
-
-    public CustomerDao() {
-    }
-
+    
     public CustomerDao(Connection conn) {
         this.conn = conn;
     }
-    
-    
 
     @Override
     public boolean add(Customer obj) {
