@@ -1,0 +1,75 @@
+-- List all tables
+-- select schema_name(t.schema_id) as schema_name,
+--        t.name as table_name,
+--        t.create_date,
+--        t.modify_date
+-- from sys.tables t
+-- order by schema_name,
+--          table_name;
+-- GO
+
+-- CREATE TABLE tbl_customers (
+--   id int IDENTITY(1,1) PRIMARY KEY,
+--   name varchar(50) NOT NULL,
+--   username varchar(30) NOT NULL,
+--   password varchar(32) NOT NULL,
+--   phone varchar(13) NOT NULL,
+--   address varchar(50) NOT NULL,
+--   status tinyint DEFAULT '1',
+--   created_at TIMESTAMP NOT NULL,
+--   CONSTRAINT uc_customer UNIQUE (username)
+-- );
+-- GO
+-- DROP TABLE customers;
+-- GO
+
+-- Commands completed successfully. 
+-- CREATE TABLE tbl_admin
+-- CREATE TABLE tbl_admin (
+--   id INT IDENTITY(1,1) PRIMARY KEY,
+--   username VARCHAR(30) NOT NULL,
+--   password VARCHAR(32) NOT NULL,
+--   created_at TIMESTAMP NOT NULL
+-- );
+-- GO
+-- Tao bang hang san xuat
+-- CREATE TABLE tbl_productlines (
+--   id INT IDENTITY(1,1) PRIMARY KEY,
+--   name VARCHAR(30) NOT NULL,
+--   website VARCHAR(100) NULL DEFAULT NULL,
+--   status TINYINT DEFAULT '1'
+-- );
+-- GO
+-- Xoa bang tbl_productline
+-- DROP TABLE tbl_productline;
+-- GO
+
+-- Tao bang san pham
+-- CREATE TABLE tbl_products (
+--   id INT IDENTITY(1,1) PRIMARY KEY,
+--   productline_id INT,
+--   name VARCHAR(50) NOT NULL,
+--   qty TINYINT DEFAULT '0',
+--   price DECIMAL(10,2) NOT NULL,
+--   description VARCHAR(MAX) NULL DEFAULT NULL,
+--   status TINYINT DEFAULT '1',
+--   CONSTRAINT product_productline_id FOREIGN KEY (productline_id)
+--     REFERENCES tbl_productlines (id)
+-- );
+-- GO
+-- Xoa bang tbl_products
+-- DROP TABLE tbl_products;
+-- GO
+-- Tao bang hoa don
+-- CREATE TABLE orders (
+--   id INT IDENTITY(1,1) PRIMARY KEY,
+--   customer_id INT,
+--   name VARCHAR(30) NOT NULL,
+--   address VARCHAR(50) NOT NULL,
+--   phone VARCHAR(13) NOT NULL,
+-- );
+-- Chen du lieu vao bang tbl_productlines
+-- INSERT INTO tbl_productlines (name) VALUES ('Samsung');
+-- GO
+-- SELECT * FROM tbl_productlines;
+-- GO
