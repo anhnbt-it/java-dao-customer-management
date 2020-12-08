@@ -9,6 +9,7 @@ import dao.AddToCart;
 import dao.DBConnection;
 import dao.ProductDao;
 import java.sql.Connection;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import model.Product;
@@ -27,7 +28,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Connection conn = DBConnection.getConnection();
         ProductDao productDao = new ProductDao(conn);
-        AddToCart addToCart = new AddToCart();
+        AddToCart addToCart = new AddToCart(conn);
         int choice;
         do {            
             System.out.println("---- MENU ---- ");
@@ -72,27 +73,31 @@ public class Main {
     }
 
     private static void addNewProduct(Scanner scanner, ProductDao productDao) {
-        System.out.print("Enter name: ");
-        String name = scanner.nextLine();
-        System.out.println("Enter Product line id: ");
-        int productlineId = scanner.nextInt();
-        System.out.println("Enter quantity: ");
-        int qty = scanner.nextInt();
-        System.out.println("Enter price: ");
-        double price = scanner.nextDouble();
-        
-        scanner.nextLine();
-        
-        System.out.println("Enter description: ");
-        String desc = scanner.nextLine();
-        System.out.println("Enter status [0, 1]: ");
-        short status = scanner.nextShort();
-        scanner.nextLine();
-        Product product = new Product(productlineId, name, qty, price, desc, status);
-        if (productDao.add(product)) {
-            System.out.println("Created record successfully.");
-        } else {
-            System.out.println("Insert fails.");
+        try {
+            System.out.print("Enter name: ");
+            String name = scanner.nextLine();
+            System.out.println("Enter Product line id: ");
+            int productlineId = scanner.nextInt();
+            System.out.println("Enter quantity: ");
+            int qty = scanner.nextInt();
+            System.out.println("Enter price: ");
+            double price = scanner.nextDouble();
+
+            scanner.nextLine();
+
+            System.out.println("Enter description: ");
+            String desc = scanner.nextLine();
+            System.out.println("Enter status [0, 1]: ");
+            short status = scanner.nextShort();
+            scanner.nextLine();
+            Product product = new Product(productlineId, name, qty, price, desc, status);
+            if (productDao.add(product)) {
+                System.out.println("Created record successfully.");
+            } else {
+                System.out.println("Insert fails.");
+            }
+        } catch (InputMismatchException ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -104,7 +109,15 @@ public class Main {
         if (product == null) {
             System.out.println("Product not found.");
         } else {
+            System.out.println("Enter quantity: ");
+            short quantity = scanner.nextShort();
+            product.setQty(quantity);
             addToCart.addProduct(product);
+            System.out.println("Press any key to quit...");
+            short choose = scanner.nextShort();
+            if (choose == -1) {
+                addToCart.checkOut(product.getId(), product.getQty());
+            }
         }
     }
     

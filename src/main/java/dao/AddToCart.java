@@ -7,6 +7,7 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -51,14 +52,36 @@ public class AddToCart {
         }
     }
     
-    public void checkOut() {
+    public void checkOut(int productId, int qty) {
         getListProducts();
-        // Them hoa don
-        String sql = "INSERT INTO orders (customer_id, name, address, phone) "
+        // Them hoa don > them hoa don chi tiet
+        String sql = "INSERT INTO tbl_orders (customer_id, name, address, phone) "
                 + "VALUES (?, ?, ?, ?);";
         try {
             PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, 0);
+            pstmt.setInt(1, 1);
+            pstmt.setString(2, "TuanAnh");
+            pstmt.setString(3, "Hanoi");
+            pstmt.setString(4, "123");
+            pstmt.executeUpdate();
+            if (pstmt.executeUpdate() > 0) {
+                ResultSet rs = pstmt.getGeneratedKeys();
+                if (rs.next()) {
+                    // Them hoa don chi tiet
+                    int insertedId = rs.getInt(1);
+                    sql = "INSERT INTO tbl_orderdetails (order_id, product_id, quantity) VALUES (?, ?, ?)";
+                    pstmt.setInt(1, insertedId);
+                    pstmt.setInt(2, productId);
+                    pstmt.setInt(3, qty);
+                    if (pstmt.executeUpdate() > 0) {
+                        System.out.println("Checkout thanh cong!");
+                    } else {
+                        System.out.println("Check out that bai!");
+                    }
+                }
+//            } else {
+//                System.out.println("Check out that bai!");
+            }
         } catch (SQLException ex) {
             Logger.getLogger(AddToCart.class.getName()).log(Level.SEVERE, null, ex);
         }

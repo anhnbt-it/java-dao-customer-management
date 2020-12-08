@@ -73,3 +73,24 @@
 -- GO
 -- SELECT * FROM tbl_productlines;
 -- GO
+-- CREATE TABLE tbl_orders (
+--     id INT IDENTITY(1,1) PRIMARY KEY,
+--     customer_id INT NOT NULL,
+--     name VARCHAR(50) NULL,
+--     address VARCHAR(50) NULL,
+--     phone VARCHAR(13) NULL
+-- );
+-- GO
+SELECT * FROM tbl_orders;
+GO
+-- CREATE TABLE tbl_orderdetails (
+--     id INT IDENTITY(1,1) PRIMARY KEY,
+--     order_id INT NOT NULL,
+--     product_id INT NOT NULL,
+--     CONSTRAINT orderdetails_order_id_fk FOREIGN KEY (order_id)
+--         REFERENCES tbl_orders (id),
+--         CONSTRAINT orderdetails_product_id_fk FOREIGN KEY (product_id)
+--             REFERENCES tbl_customers (id)
+-- );
+-- ALTER TABLE tbl_orderdetails
+--     ADD quantity TINYINT NOT NULL;
