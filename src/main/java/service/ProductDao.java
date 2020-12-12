@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dao;
+package service;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,40 +25,73 @@ public class ProductDao implements IDao<Product> {
     public ProductDao(Connection conn) {
         this.conn = conn;
     }
-
+    
     @Override
-    public boolean add(Product obj) {
+    public void save(Product obj) {
         String sql = "INSERT INTO tbl_products (name, productline_id, qty, price"
                 + ", description, status) VALUES (?, ?, ?, ?, ?, ?);";
-        PreparedStatement pstmt;
-        int result = 0;
-        try {
-            pstmt = conn.prepareStatement(sql);
+        int rowsAffected = 0;
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, obj.getName());
             pstmt.setInt(2, obj.getProductlineId());
             pstmt.setInt(3, obj.getQty());
             pstmt.setDouble(4, obj.getPrice());
             pstmt.setString(5, obj.getDesc());
             pstmt.setShort(6, obj.getStatus());
-            result = pstmt.executeUpdate();
+            
+            rowsAffected = pstmt.executeUpdate();
+            System.out.println(rowsAffected + " row(s) inserted");
+            
+            pstmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return result > 0;
     }
 
     @Override
-    public boolean remove(int id) {
+    public void update(Product obj) {
+        String sql = "UPDATE tbl_products SET name = ?, productline_id = ?, qty = ?"
+                + ", price = ?, description = ?, status = ? WHERE id = ?";
+        int rowsAffected = 0;
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, obj.getName());
+            pstmt.setInt(2, obj.getProductlineId());
+            pstmt.setInt(3, obj.getQty());
+            pstmt.setDouble(4, obj.getPrice());
+            pstmt.setString(5, obj.getDesc());
+            pstmt.setShort(6, obj.getStatus());
+            pstmt.setInt(7, obj.getId());
+            
+            rowsAffected = pstmt.executeUpdate();
+            System.out.println(rowsAffected + " row(s) updated");
+            
+            pstmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public void delete(Product obj) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean edit(Product obj) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void deleteById(int id) {
+        String sql = "DELETE FROM tbl_products WHERE id = ?";
+        int rowsAffected = 0;
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, id);
+            rowsAffected = pstmt.executeUpdate();
+            System.out.println(rowsAffected + " row(s) deleted");
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
-    public List<Product> getRecords(int currentPage, int recordsPerPage) {
+    public List<Product> findAll() {
         List<Product> products = new ArrayList<>();
         try {
             String sql = "SELECT * FROM tbl_products";
@@ -82,7 +115,7 @@ public class ProductDao implements IDao<Product> {
     }
 
     @Override
-    public List<Product> findByName(String query, int currentPage, int recordsPerPage) {
+    public List<Product> findByName(String query) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -90,8 +123,7 @@ public class ProductDao implements IDao<Product> {
     public Product findById(int id) {
         String sql = "SELECT * FROM tbl_products WHERE id = ?";
         Product product = new Product();
-        try {
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -107,6 +139,11 @@ public class ProductDao implements IDao<Product> {
             Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return product;
+    }
+
+    @Override
+    public boolean existById(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

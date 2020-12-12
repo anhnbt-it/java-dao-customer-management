@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dao;
+package service;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -27,10 +27,7 @@ public class DBConnection {
         String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=quanlysanpham;user=sa;password=KhoaiTay@2019";
         Connection conn = null;
         try {
-            System.out.print("Connecting to SQL Server ... ");
-//            conn = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
             conn = DriverManager.getConnection(connectionUrl);
-            System.out.println("Done.");
         } catch (SQLException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }

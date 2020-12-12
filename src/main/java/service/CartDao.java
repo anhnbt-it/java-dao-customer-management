@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dao;
+package service;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.logging.Level;
@@ -19,11 +20,11 @@ import model.Product;
  *
  * @author anhnbt
  */
-public class AddToCart {
-    private Hashtable<Integer, Product> hashtable;
+public class CartDao {
+    private final Hashtable<Integer, Product> hashtable;
     Connection conn;
 
-    public AddToCart(Connection conn) {
+    public CartDao(Connection conn) {
         hashtable = new Hashtable<>();
         this.conn = conn;
     }
@@ -58,12 +59,11 @@ public class AddToCart {
         String sql = "INSERT INTO tbl_orders (customer_id, name, address, phone) "
                 + "VALUES (?, ?, ?, ?);";
         try {
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+            PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             pstmt.setInt(1, 1);
             pstmt.setString(2, "TuanAnh");
             pstmt.setString(3, "Hanoi");
             pstmt.setString(4, "123");
-            pstmt.executeUpdate();
             if (pstmt.executeUpdate() > 0) {
                 ResultSet rs = pstmt.getGeneratedKeys();
                 if (rs.next()) {
@@ -79,11 +79,9 @@ public class AddToCart {
                         System.out.println("Check out that bai!");
                     }
                 }
-//            } else {
-//                System.out.println("Check out that bai!");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(AddToCart.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CartDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

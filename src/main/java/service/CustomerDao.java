@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dao;
+package service;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Customer;
@@ -20,14 +21,14 @@ import model.Customer;
  * @author anhnbt
  */
 public class CustomerDao implements IDao<Customer> {
-    private Connection conn;
+    private final Connection conn;
     
     public CustomerDao(Connection conn) {
         this.conn = conn;
     }
 
     @Override
-    public boolean add(Customer obj) {
+    public void save(Customer obj) {
         String sql = "INSERT INTO customers (name, username, password, phone, address"
                 + ", gender, status, roles, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
         int rowsAffected = 0;
@@ -48,29 +49,35 @@ public class CustomerDao implements IDao<Customer> {
             
             rowsAffected = pstmt.executeUpdate();
             System.out.println(rowsAffected + " row(s) inserted");
+            
+            pstmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(CustomerDao.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return rowsAffected > 0;
     }
 
     @Override
-    public boolean remove(int id) {
+    public void update(Customer obj) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean edit(Customer obj) {
+    public void delete(Customer obj) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<Customer> getRecords(int currentPage, int recordsPerPage) {
+    public void deleteById(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<Customer> findByName(String query, int currentPage, int recordsPerPage) {
+    public List<Customer> findAll() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Customer> findByName(String query) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -78,5 +85,10 @@ public class CustomerDao implements IDao<Customer> {
     public Customer findById(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
+    @Override
+    public boolean existById(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
