@@ -41,15 +41,14 @@ public class Main {
 
             int choice;
             do {
-                System.out.println("--- SHOPPING CART MENU ---");
-                System.out.println("  1: List Products");
-                System.out.println("  2: Add New Product");
-                System.out.println("  3: Edit Product");
-                System.out.println("  4: Remove Product");
-                System.out.println("  5: Shopping cart");
-                System.out.println("  6: Your list cart");
-                System.out.println("  7: Exit");
-                System.out.print("Enter your choice: ");
+                System.out.println("***************************************************");
+                System.out.println("\t\t SHOPPING CART MENU ");
+                System.out.println("***************************************************");
+                System.out.println("  1. List Products\t\t4. Remove Product");
+                System.out.println("  2. Add New Product\t\t5. Show now");
+                System.out.println("  3. Edit Product\t\t6. Cart");
+                System.out.println("  7. Exit");
+                System.out.print("Please choose an option [1-7]: ");
                 choice = scanner.nextInt();
                 scanner.nextLine();
                 switch (choice) {
@@ -66,10 +65,10 @@ public class Main {
                         productController.deleteProduct(scanner);
                         break;
                     case 5:
-                        cartController.addCart(scanner);
+                        cartController.shopNow(scanner);
                         break;
                     case 6:
-                        cartController.listCarts();
+                        cartController.shoppingCart();
                         break;
                     case 7:
                         System.out.println("Bye...");

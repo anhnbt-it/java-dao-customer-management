@@ -19,6 +19,7 @@
 --   created_at TIMESTAMP NOT NULL,
 --   CONSTRAINT uc_customer UNIQUE (username)
 -- );
+-- ALTER TABLE tbl_customers DROP COLUMN created_at;
 -- GO
 -- DROP TABLE customers;
 -- GO
@@ -81,8 +82,8 @@
 --     phone VARCHAR(13) NULL
 -- );
 -- GO
-SELECT * FROM tbl_orders;
-GO
+-- SELECT * FROM tbl_customers;
+-- GO
 -- CREATE TABLE tbl_orderdetails (
 --     id INT IDENTITY(1,1) PRIMARY KEY,
 --     order_id INT NOT NULL,
@@ -94,3 +95,6 @@ GO
 -- );
 -- ALTER TABLE tbl_orderdetails
 --     ADD quantity TINYINT NOT NULL;
+-- INSERT INTO tbl_customers (name, username, password, phone, address, status) 
+-- VALUES ('Anh', 'anhnbt', '123456', '0346868928', 'HN', 1);
+-- GO
